@@ -15,8 +15,47 @@
   <meta name="HandheldFriendly" content="True">
   <meta name="MobileOptimized" content="320">
   <meta name="viewport" content="width=device-width, target-densitydpi=160dpi, initial-scale=1.0, maximum-scale=1, user-scalable=no, minimal-ui">
-</head>
-<body>
+<link rel="stylesheet" href="style/customizations.css"><link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet"></head>
+<body><!-- THEME SELECTOR SPLASH -->
+<div id="themeSplash" class="theme-splash">
+  <div class="splash-inner">
+    <div class="splash-logo">2048</div>
+    <div class="splash-tagline">SELECT YOUR INTERFACE</div>
+    <div class="theme-cards">
+
+      <div class="theme-card" id="selectCyber">
+        <div class="theme-card-preview cyber-card-bg">
+          <div class="preview-tile pt-a">8</div>
+          <div class="preview-tile pt-b">16</div>
+          <div class="preview-tile pt-c">32</div>
+        </div>
+        <div class="theme-card-label">⚡ CYBER</div>
+        <div class="theme-card-sub">Neon · Glass · Futuristic</div>
+      </div>
+
+      <div class="theme-card" id="selectGameboy">
+        <div class="theme-card-preview gameboy-card-bg">
+          <div class="preview-tile pt-d">8</div>
+          <div class="preview-tile pt-e">16</div>
+          <div class="preview-tile pt-f">32</div>
+        </div>
+        <div class="theme-card-label">🎮 GAME BOY</div>
+        <div class="theme-card-sub">Retro · Pink · Glass</div>
+      </div>
+
+    </div>
+    <div class="splash-hint">Click a theme to begin</div>
+  </div>
+</div>
+
+<!-- 4096 ACHIEVEMENT OVERLAY -->
+<div id="achievementOverlay" class="achievement-overlay">
+  <div class="achievement-content">
+    <div class="achievement-title">4096</div>
+    <div class="achievement-sub">LEGENDARY</div>
+    <div class="achievement-msg">Interface Unlocked</div>
+  </div>
+</div>
   <div class="container">
     <div class="heading">
       <h1 class="title">2048</h1>
@@ -95,5 +134,5 @@
   <script src="js/local_storage_manager.js"></script>
   <script src="js/game_manager.js"></script>
   <script src="js/application.js"></script>
-</body>
+<script src="js/customizations.js"></script></body>
 </html>

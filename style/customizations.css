@@ -1,0 +1,821 @@
+/* ============================================
+   TILE NUMBER NUCLEAR FIX
+   ============================================ */
+.tile .tile-inner {
+  z-index: 20 !important;
+  font-family: 'Orbitron', 'Clear Sans', sans-serif !important;
+  font-weight: 700 !important;
+  color: #ffffff !important;
+  text-align: center !important;
+  /* DO NOT override position/display/width/height — let the original game handle layout */
+}
+
+/* Lower tile values need darker text on light backgrounds */
+body.theme-cyber .tile-2 .tile-inner,
+body.theme-cyber .tile-4 .tile-inner {
+  color: #c8f0ff !important;
+}
+
+body.theme-gameboy .tile-2 .tile-inner,
+body.theme-gameboy .tile-4 .tile-inner {
+  color: #2a1a2e !important;
+}
+
+body.theme-gameboy .tile-8 .tile-inner,
+body.theme-gameboy .tile-16 .tile-inner,
+body.theme-gameboy .tile-32 .tile-inner,
+body.theme-gameboy .tile-64 .tile-inner,
+body.theme-gameboy .tile-128 .tile-inner,
+body.theme-gameboy .tile-256 .tile-inner,
+body.theme-gameboy .tile-512 .tile-inner,
+body.theme-gameboy .tile-1024 .tile-inner,
+body.theme-gameboy .tile-2048 .tile-inner {
+  color: #ffffff !important;
+}
+/* ============================================
+   2048 — Complete Custom Redesign
+   Themes: Cyber | Game Boy | 4096 Rose Gold
+   ============================================ */
+/* ============================================
+   NEW GAME / RETRY BUTTONS
+   ============================================ */
+body.theme-cyber .restart-button,
+body.theme-cyber .retry-button,
+body.theme-cyber .keep-playing-button {
+  font-family: 'Orbitron', sans-serif !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  letter-spacing: 2px !important;
+  text-transform: uppercase !important;
+  color: #00d4ff !important;
+  background: rgba(0,212,255,0.06) !important;
+  border: 1px solid rgba(0,212,255,0.45) !important;
+  border-radius: 4px !important;
+  padding: 10px 20px !important;
+  cursor: pointer !important;
+  clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%) !important;
+  box-shadow: 0 0 15px rgba(0,212,255,0.2), inset 0 1px 0 rgba(0,212,255,0.1) !important;
+  backdrop-filter: blur(8px) !important;
+  transition: all 0.25s ease !important;
+  position: relative !important;
+  overflow: hidden !important;
+}
+
+body.theme-cyber .restart-button:hover,
+body.theme-cyber .retry-button:hover,
+body.theme-cyber .keep-playing-button:hover {
+  color: #ffffff !important;
+  box-shadow: 0 0 25px rgba(0,212,255,0.5), inset 0 0 15px rgba(0,212,255,0.1) !important;
+  transform: translateY(-2px) !important;
+}
+
+body.theme-gameboy .restart-button,
+body.theme-gameboy .retry-button,
+body.theme-gameboy .keep-playing-button {
+  font-family: 'Orbitron', sans-serif !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  letter-spacing: 2px !important;
+  text-transform: uppercase !important;
+  color: #2a1a2e !important;
+  background: rgba(255,255,255,0.5) !important;
+  border: 1px solid rgba(255,107,157,0.5) !important;
+  border-radius: 20px !important;
+  padding: 10px 20px !important;
+  cursor: pointer !important;
+  backdrop-filter: blur(10px) !important;
+  box-shadow: 0 2px 12px rgba(255,107,157,0.25), inset 0 1px 0 rgba(255,255,255,0.8) !important;
+  transition: all 0.25s ease !important;
+}
+
+body.theme-gameboy .restart-button:hover,
+body.theme-gameboy .retry-button:hover,
+body.theme-gameboy .keep-playing-button:hover {
+  background: rgba(255,107,157,0.2) !important;
+  border-color: #ff6b9d !important;
+  box-shadow: 0 4px 20px rgba(255,107,157,0.4) !important;
+  transform: translateY(-2px) !important;
+}
+
+/* ============================================
+   SPLASH SCREEN
+   ============================================ */
+.theme-splash {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #050510;
+  transition: opacity 0.8s ease;
+}
+
+.theme-splash.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.splash-inner {
+  text-align: center;
+  padding: 20px;
+}
+
+.splash-logo {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 72px;
+  font-weight: 900;
+  background: linear-gradient(135deg, #00d4ff, #7b2fff, #e94560);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: 8px;
+  margin-bottom: 8px;
+  filter: drop-shadow(0 0 20px rgba(0, 212, 255, 0.5));
+  animation: logoFloat 3s ease-in-out infinite;
+}
+
+@keyframes logoFloat {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-8px); }
+}
+
+.splash-tagline {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 12px;
+  letter-spacing: 6px;
+  color: rgba(0, 212, 255, 0.7);
+  margin-bottom: 40px;
+}
+
+.theme-cards {
+  display: flex;
+  gap: 24px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 24px;
+}
+
+.theme-card {
+  width: 160px;
+  cursor: pointer;
+  border-radius: 12px;
+  padding: 16px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(0, 212, 255, 0.25);
+  backdrop-filter: blur(12px);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.theme-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(0,212,255,0.08), transparent);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.theme-card:hover {
+  border-color: #00d4ff;
+  transform: translateY(-6px);
+  box-shadow: 0 0 30px rgba(0, 212, 255, 0.35), 0 20px 40px rgba(0,0,0,0.4);
+}
+
+.theme-card:hover::before { opacity: 1; }
+
+.theme-card-preview {
+  height: 90px;
+  border-radius: 8px;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  position: relative;
+  overflow: hidden;
+}
+
+.cyber-card-bg {
+  background: linear-gradient(135deg, #050510, #0d0d2b);
+  border: 1px solid rgba(0,212,255,0.3);
+}
+
+.gameboy-card-bg {
+  background: linear-gradient(135deg, #f0e6ef, #e8d0e8);
+  border: 1px solid rgba(255,107,157,0.4);
+}
+
+.preview-tile {
+  width: 32px;
+  height: 32px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  color: white;
+}
+
+.pt-a { background: linear-gradient(135deg, #0d0d3b, #1a0066); box-shadow: 0 0 10px #00d4ff; border: 1px solid #00d4ff; }
+.pt-b { background: linear-gradient(135deg, #1a0044, #330088); box-shadow: 0 0 10px #7b2fff; border: 1px solid #7b2fff; }
+.pt-c { background: linear-gradient(135deg, #330011, #660033); box-shadow: 0 0 10px #e94560; border: 1px solid #e94560; }
+.pt-d { background: rgba(255,107,157,0.3); border: 1px solid #ff6b9d; color: #2a1a2e; }
+.pt-e { background: rgba(255,51,102,0.3);  border: 1px solid #ff3366; color: #2a1a2e; }
+.pt-f { background: rgba(180,60,120,0.3);  border: 1px solid #b43c78; color: white; }
+
+.theme-card-label {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: white;
+  letter-spacing: 2px;
+  margin-bottom: 4px;
+}
+
+.theme-card-sub {
+  font-size: 10px;
+  color: rgba(255,255,255,0.45);
+  letter-spacing: 1px;
+}
+
+.splash-hint {
+  font-size: 11px;
+  color: rgba(255,255,255,0.3);
+  letter-spacing: 3px;
+  animation: blink 2s ease-in-out infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 0.3; }
+  50%       { opacity: 0.8; }
+}
+
+/* ============================================
+   CYBER THEME — BASE
+   ============================================ */
+body.theme-cyber {
+  background: #050510 !important;
+  background-image:
+    radial-gradient(ellipse at 20% 20%, rgba(0,212,255,0.06) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 80%, rgba(123,47,255,0.06) 0%, transparent 50%);
+}
+
+body.theme-cyber .container {
+  position: relative;
+}
+
+body.theme-cyber h1.title {
+  font-family: 'Orbitron', sans-serif !important;
+  font-weight: 900 !important;
+  font-size: 52px !important;
+  background: linear-gradient(135deg, #00d4ff, #7b2fff) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
+  filter: drop-shadow(0 0 12px rgba(0,212,255,0.6)) !important;
+}
+
+body.theme-cyber .score-container,
+body.theme-cyber .best-container {
+  background: rgba(0,212,255,0.08) !important;
+  border: 1px solid rgba(0,212,255,0.25) !important;
+  backdrop-filter: blur(10px) !important;
+  font-family: 'Orbitron', sans-serif !important;
+  border-radius: 8px !important;
+  box-shadow: 0 0 15px rgba(0,212,255,0.15) !important;
+  color: white !important;
+}
+
+body.theme-cyber .game-container {
+  background: rgba(13,13,43,0.7) !important;
+  border: 1px solid rgba(0,212,255,0.2) !important;
+  backdrop-filter: blur(20px) !important;
+  border-radius: 12px !important;
+  box-shadow:
+    0 0 40px rgba(0,212,255,0.1),
+    0 0 80px rgba(123,47,255,0.08),
+    inset 0 1px 0 rgba(255,255,255,0.06) !important;
+}
+
+body.theme-cyber .grid-cell {
+  background: rgba(0,0,0,0.3) !important;
+  border-radius: 6px !important;
+}
+
+/* Cyber Tiles */
+body.theme-cyber .tile-2   .tile-inner { background: linear-gradient(135deg,#0d1b3e,#1a2a5e) !important; border:1px solid rgba(0,212,255,0.5) !important; box-shadow: 0 0 12px rgba(0,212,255,0.3) !important; }
+body.theme-cyber .tile-4   .tile-inner { background: linear-gradient(135deg,#1a0a3e,#2d1a6e) !important; border:1px solid rgba(123,47,255,0.5) !important; box-shadow: 0 0 12px rgba(123,47,255,0.3) !important; }
+body.theme-cyber .tile-8   .tile-inner { background: linear-gradient(135deg,#2b0033,#4a0055) !important; border:1px solid rgba(233,69,96,0.5) !important; box-shadow: 0 0 12px rgba(233,69,96,0.3) !important; }
+body.theme-cyber .tile-16  .tile-inner { background: linear-gradient(135deg,#003366,#004d99) !important; border:1px solid rgba(0,180,255,0.6) !important; box-shadow: 0 0 15px rgba(0,180,255,0.4) !important; }
+body.theme-cyber .tile-32  .tile-inner { background: linear-gradient(135deg,#330066,#5500aa) !important; border:1px solid rgba(150,0,255,0.6) !important; box-shadow: 0 0 15px rgba(150,0,255,0.4) !important; }
+body.theme-cyber .tile-64  .tile-inner { background: linear-gradient(135deg,#660033,#990044) !important; border:1px solid rgba(255,0,100,0.6) !important; box-shadow: 0 0 18px rgba(255,0,100,0.5) !important; }
+body.theme-cyber .tile-128 .tile-inner { background: linear-gradient(135deg,#004433,#006644) !important; border:1px solid rgba(0,255,150,0.6) !important; box-shadow: 0 0 20px rgba(0,255,150,0.5) !important; }
+body.theme-cyber .tile-256 .tile-inner { background: linear-gradient(135deg,#443300,#665500) !important; border:1px solid rgba(255,200,0,0.6) !important; box-shadow: 0 0 20px rgba(255,200,0,0.5) !important; }
+body.theme-cyber .tile-512 .tile-inner { background: linear-gradient(135deg,#000055,#0000aa) !important; border:1px solid rgba(100,150,255,0.7) !important; box-shadow: 0 0 25px rgba(100,150,255,0.6) !important; }
+body.theme-cyber .tile-1024 .tile-inner { background: linear-gradient(135deg,#1a0d00,#3d2200) !important; border:1px solid rgba(255,160,0,0.8) !important; box-shadow: 0 0 30px rgba(255,160,0,0.6),0 0 60px rgba(255,160,0,0.2) !important; font-size: 18px !important; }
+body.theme-cyber .tile-2048 .tile-inner { background: linear-gradient(135deg,#1a0000,#000) !important; border:1px solid rgba(255,215,0,0.9) !important; box-shadow: 0 0 40px rgba(255,215,0,0.7),0 0 80px rgba(255,215,0,0.3) !important; animation: rainbowGlow 2s linear infinite !important; font-size: 18px !important; }
+
+@keyframes rainbowGlow {
+  0%   { box-shadow: 0 0 40px rgba(255,0,0,0.7),   0 0 80px rgba(255,0,0,0.3); }
+  25%  { box-shadow: 0 0 40px rgba(0,255,0,0.7),   0 0 80px rgba(0,255,0,0.3); }
+  50%  { box-shadow: 0 0 40px rgba(0,0,255,0.7),   0 0 80px rgba(0,0,255,0.3); }
+  75%  { box-shadow: 0 0 40px rgba(255,255,0,0.7), 0 0 80px rgba(255,255,0,0.3); }
+  100% { box-shadow: 0 0 40px rgba(255,0,0,0.7),   0 0 80px rgba(255,0,0,0.3); }
+}
+
+/* ============================================
+   GAME BOY THEME
+   ============================================ */
+body.theme-gameboy {
+  background: #d4e0e8 !important;
+}
+
+body.theme-gameboy h1.title {
+  font-family: 'Orbitron', sans-serif !important;
+  font-weight: 900 !important;
+  color: #2a1a2e !important;
+  text-shadow: 2px 2px 0 rgba(255,107,157,0.4) !important;
+}
+
+body.theme-gameboy .score-container,
+body.theme-gameboy .best-container {
+  background: rgba(255,255,255,0.5) !important;
+  border: 1px solid rgba(255,107,157,0.4) !important;
+  backdrop-filter: blur(8px) !important;
+  font-family: 'Orbitron', sans-serif !important;
+  color: #2a1a2e !important;
+  border-radius: 10px !important;
+  box-shadow: 0 4px 15px rgba(255,107,157,0.2) !important;
+}
+
+body.theme-gameboy .game-container {
+  background: rgba(255,255,255,0.35) !important;
+  border: 2px solid rgba(255,107,157,0.3) !important;
+  backdrop-filter: blur(16px) !important;
+  border-radius: 16px !important;
+  box-shadow:
+    0 8px 32px rgba(255,107,157,0.25),
+    inset 0 1px 0 rgba(255,255,255,0.7),
+    inset 0 -1px 0 rgba(0,0,0,0.05) !important;
+}
+
+body.theme-gameboy .grid-cell {
+  background: rgba(255,107,157,0.08) !important;
+  border-radius: 8px !important;
+}
+
+/* Game Boy screen bezel (decorative top bar) */
+body.theme-gameboy .game-container::before {
+  content: '● ●  2048 GAME BOY';
+  display: block;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 8px;
+  letter-spacing: 3px;
+  color: rgba(255,107,157,0.7);
+  text-align: center;
+  padding: 6px 0 0 0;
+}
+
+/* Game Boy Tiles */
+body.theme-gameboy .tile-2    .tile-inner { background: rgba(255,220,235,0.8) !important; border:1px solid rgba(255,107,157,0.4) !important; color: #2a1a2e !important; }
+body.theme-gameboy .tile-4    .tile-inner { background: rgba(255,180,210,0.85) !important; border:1px solid rgba(255,107,157,0.5) !important; color: #2a1a2e !important; }
+body.theme-gameboy .tile-8    .tile-inner { background: rgba(255,107,157,0.75) !important; border:1px solid #ff6b9d !important; box-shadow: 0 4px 15px rgba(255,107,157,0.4) !important; }
+body.theme-gameboy .tile-16   .tile-inner { background: rgba(255,51,102,0.7) !important;  border:1px solid #ff3366 !important; box-shadow: 0 4px 15px rgba(255,51,102,0.4) !important; }
+body.theme-gameboy .tile-32   .tile-inner { background: rgba(200,30,90,0.75) !important;  border:1px solid #c81e5a !important; box-shadow: 0 4px 18px rgba(200,30,90,0.4) !important; }
+body.theme-gameboy .tile-64   .tile-inner { background: rgba(160,10,70,0.8) !important;   border:1px solid #a00a46 !important; box-shadow: 0 4px 20px rgba(160,10,70,0.5) !important; }
+body.theme-gameboy .tile-128  .tile-inner { background: rgba(120,0,50,0.85) !important;   border:1px solid #780032 !important; box-shadow: 0 4px 25px rgba(120,0,50,0.5) !important; }
+body.theme-gameboy .tile-256  .tile-inner { background: rgba(80,0,140,0.8) !important;    border:1px solid #50008c !important; box-shadow: 0 4px 25px rgba(80,0,140,0.5) !important; }
+body.theme-gameboy .tile-512  .tile-inner { background: rgba(40,0,120,0.85) !important;   border:1px solid #280078 !important; box-shadow: 0 4px 30px rgba(40,0,120,0.6) !important; }
+body.theme-gameboy .tile-1024 .tile-inner { background: linear-gradient(135deg,rgba(200,50,150,0.9),rgba(100,0,200,0.9)) !important; border:1px solid rgba(255,150,220,0.8) !important; box-shadow: 0 0 30px rgba(200,50,150,0.6) !important; font-size:18px !important; }
+body.theme-gameboy .tile-2048 .tile-inner { background: linear-gradient(135deg,#ff6b9d,#7b2fff,#ff3366) !important; border:1px solid rgba(255,255,255,0.6) !important; box-shadow: 0 0 40px rgba(255,107,157,0.8) !important; animation: gameboyRainbow 1.5s linear infinite !important; font-size:18px !important; }
+
+@keyframes gameboyRainbow {
+  0%   { filter: hue-rotate(0deg); }
+  100% { filter: hue-rotate(360deg); }
+}
+
+/* ============================================
+   4096 ACHIEVEMENT — ROSE GOLD CIRCUIT
+   ============================================ */
+body.achievement-4096 {
+  background: linear-gradient(135deg, #f8d0d8 0%, #eec4cc 40%, #f5dde0 100%) !important;
+  transition: background 1.5s ease !important;
+}
+
+body.achievement-4096 h1.title {
+  background: linear-gradient(135deg, #b76e79, #c4878f, #d4a0a8) !important;
+  -webkit-background-clip: text !important;
+  -webkit-text-fill-color: transparent !important;
+  background-clip: text !important;
+  filter: drop-shadow(0 2px 8px rgba(183,110,121,0.4)) !important;
+}
+
+body.achievement-4096 .game-container {
+  background: rgba(255,255,255,0.45) !important;
+  border: 2px solid rgba(183,110,121,0.35) !important;
+  backdrop-filter: blur(20px) !important;
+  box-shadow:
+    0 8px 40px rgba(183,110,121,0.3),
+    0 2px 0 rgba(255,255,255,0.8) inset,
+    0 -2px 0 rgba(183,110,121,0.1) inset !important;
+}
+
+/* Circuit board pattern overlay on game container */
+body.achievement-4096 .game-container::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border-radius: 12px;
+  background-image:
+    linear-gradient(rgba(183,110,121,0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(183,110,121,0.06) 1px, transparent 1px);
+  background-size: 20px 20px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+body.achievement-4096 .grid-cell {
+  background: rgba(183,110,121,0.08) !important;
+}
+
+/* Rose Gold Tiles */
+body.achievement-4096 .tile .tile-inner {
+  background: linear-gradient(135deg, rgba(255,255,255,0.6), rgba(240,200,210,0.8)) !important;
+  border: 1px solid rgba(183,110,121,0.4) !important;
+  backdrop-filter: blur(8px) !important;
+  color: #6b3a40 !important;
+  box-shadow: 0 2px 12px rgba(183,110,121,0.25), inset 0 1px 0 rgba(255,255,255,0.8) !important;
+  text-shadow: none !important;
+}
+
+body.achievement-4096 .tile-4096 .tile-inner {
+  background: linear-gradient(135deg, #b76e79, #c4878f, #d4a0a8) !important;
+  color: white !important;
+  border: 1px solid rgba(255,255,255,0.5) !important;
+  box-shadow: 0 0 30px rgba(183,110,121,0.7), 0 0 60px rgba(183,110,121,0.3) !important;
+  animation: roseGoldPulse 2s ease-in-out infinite !important;
+}
+
+@keyframes roseGoldPulse {
+  0%, 100% { box-shadow: 0 0 30px rgba(183,110,121,0.7), 0 0 60px rgba(183,110,121,0.3); }
+  50%       { box-shadow: 0 0 50px rgba(183,110,121,0.9), 0 0 100px rgba(183,110,121,0.5); }
+}
+
+/* ============================================
+   4096 ACHIEVEMENT OVERLAY ANIMATION
+   ============================================ */
+.achievement-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: radial-gradient(ellipse, rgba(183,110,121,0.95) 0%, rgba(10,0,30,0.98) 70%);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s ease;
+}
+
+.achievement-overlay.show {
+  opacity: 1;
+  pointer-events: all;
+  animation: achievementIn 3.5s ease forwards;
+}
+
+@keyframes achievementIn {
+  0%   { opacity: 0; }
+  15%  { opacity: 1; }
+  75%  { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+.achievement-content { text-align: center; }
+
+.achievement-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 96px;
+  font-weight: 900;
+  color: white;
+  background: linear-gradient(135deg, #b76e79, #ffffff, #c4878f);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: achievementScale 3.5s ease forwards;
+  filter: drop-shadow(0 0 30px rgba(255,200,210,0.8));
+}
+
+@keyframes achievementScale {
+  0%   { transform: scale(0.5); }
+  20%  { transform: scale(1.1); }
+  35%  { transform: scale(1); }
+  100% { transform: scale(1.05); }
+}
+
+.achievement-sub {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 14px;
+  letter-spacing: 10px;
+  color: rgba(255,200,210,0.8);
+  margin-top: -10px;
+}
+
+.achievement-msg {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 11px;
+  letter-spacing: 5px;
+  color: rgba(255,255,255,0.5);
+  margin-top: 16px;
+}
+
+/* ============================================
+   GLASS BUTTONS (Image 1 inspired)
+   ============================================ */
+.custom-controls {
+  display: flex;
+  gap: 8px;
+  margin: 12px 0;
+  flex-wrap: wrap;
+}
+
+/* Cyber glass buttons */
+body.theme-cyber .control-btn {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  color: #00d4ff;
+  background: rgba(0,212,255,0.06);
+  border: 1px solid rgba(0,212,255,0.4);
+  border-radius: 4px;
+  padding: 9px 14px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.25s ease;
+  clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+  box-shadow: 0 0 12px rgba(0,212,255,0.15), inset 0 1px 0 rgba(0,212,255,0.1);
+  backdrop-filter: blur(8px);
+  text-transform: uppercase;
+}
+
+body.theme-cyber .control-btn::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(0,212,255,0.15), transparent);
+  transition: left 0.4s ease;
+}
+
+body.theme-cyber .control-btn:hover { 
+  color: white;
+  border-color: #00d4ff;
+  box-shadow: 0 0 20px rgba(0,212,255,0.4), inset 0 0 15px rgba(0,212,255,0.1);
+  transform: translateY(-2px);
+}
+
+body.theme-cyber .control-btn:hover::before { left: 100%; }
+
+body.theme-cyber .control-btn.active {
+  color: white;
+  background: rgba(0,212,255,0.18);
+  border-color: #00d4ff;
+  box-shadow: 0 0 25px rgba(0,212,255,0.5), inset 0 0 20px rgba(0,212,255,0.12);
+}
+
+/* Game Boy glass buttons */
+body.theme-gameboy .control-btn {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  color: #2a1a2e;
+  background: rgba(255,255,255,0.5);
+  border: 1px solid rgba(255,107,157,0.45);
+  border-radius: 20px;
+  padding: 9px 16px;
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+  transition: all 0.25s ease;
+  box-shadow: 0 2px 10px rgba(255,107,157,0.2), inset 0 1px 0 rgba(255,255,255,0.8);
+  text-transform: uppercase;
+}
+
+body.theme-gameboy .control-btn:hover {
+  background: rgba(255,107,157,0.2);
+  border-color: #ff6b9d;
+  box-shadow: 0 4px 20px rgba(255,107,157,0.4);
+  transform: translateY(-2px);
+}
+
+body.theme-gameboy .control-btn.active {
+  background: rgba(255,51,102,0.2);
+  border-color: #ff3366;
+  color: #cc0033;
+  box-shadow: 0 4px 20px rgba(255,51,102,0.4);
+}
+
+/* Rose gold buttons for 4096 */
+body.achievement-4096 .control-btn {
+  background: rgba(255,255,255,0.4) !important;
+  border: 1px solid rgba(183,110,121,0.4) !important;
+  color: #6b3a40 !important;
+  backdrop-filter: blur(10px) !important;
+  border-radius: 20px !important;
+  box-shadow: 0 2px 10px rgba(183,110,121,0.2) !important;
+}
+
+/* ============================================
+   STATS PANEL
+   ============================================ */
+.stats-panel {
+  display: flex;
+  gap: 8px;
+  margin: 8px 0;
+  flex-wrap: wrap;
+}
+
+body.theme-cyber .stats-panel {
+  background: rgba(0,212,255,0.05);
+  border: 1px solid rgba(0,212,255,0.15);
+  border-radius: 6px;
+  padding: 10px 14px;
+  backdrop-filter: blur(8px);
+}
+
+body.theme-gameboy .stats-panel {
+  background: rgba(255,255,255,0.4);
+  border: 1px solid rgba(255,107,157,0.25);
+  border-radius: 12px;
+  padding: 10px 14px;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 2px 10px rgba(255,107,157,0.1);
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 55px;
+}
+
+.stat-label {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 8px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  margin-bottom: 2px;
+}
+
+body.theme-cyber .stat-label  { color: rgba(0,212,255,0.6); }
+body.theme-gameboy .stat-label { color: rgba(255,107,157,0.7); }
+
+.stat-value {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+body.theme-cyber .stat-value  { color: #ffffff; }
+body.theme-gameboy .stat-value { color: #2a1a2e; }
+
+/* ============================================
+   GHOST HINT
+   ============================================ */
+.ghost-hint {
+  border-radius: 6px;
+  padding: 8px 14px;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  margin: 6px 0;
+  text-align: center;
+  display: none;
+}
+
+body.theme-cyber .ghost-hint {
+  background: rgba(123,47,255,0.1);
+  border: 1px solid rgba(123,47,255,0.4);
+  color: #b08fff;
+  box-shadow: 0 0 15px rgba(123,47,255,0.2);
+}
+
+body.theme-gameboy .ghost-hint {
+  background: rgba(255,255,255,0.4);
+  border: 1px solid rgba(255,107,157,0.35);
+  color: #2a1a2e;
+}
+
+/* ============================================
+   TILE ANIMATIONS — EVERY NEW TILE
+   ============================================ */
+.tile-new .tile-inner {
+  animation: tileSpawn 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275) both !important;
+}
+
+@keyframes tileSpawn {
+  0%   { transform: scale(0) rotate(-10deg); opacity: 0; }
+  60%  { transform: scale(1.15) rotate(2deg); opacity: 1; }
+  100% { transform: scale(1) rotate(0deg); opacity: 1; }
+}
+
+.tile-merged .tile-inner {
+  animation: tileMerge 0.2s ease-out both !important;
+}
+
+@keyframes tileMerge {
+  0%   { transform: scale(1.2); }
+  50%  { transform: scale(0.9); }
+  100% { transform: scale(1); }
+}
+
+body.theme-cyber .tile-merged .tile-inner {
+  animation: tileMergeCyber 0.3s ease-out both !important;
+}
+
+@keyframes tileMergeCyber {
+  0%   { transform: scale(1.25); filter: brightness(2); }
+  50%  { transform: scale(0.92); filter: brightness(1.3); }
+  100% { transform: scale(1); filter: brightness(1); }
+}
+
+body.theme-gameboy .tile-merged .tile-inner {
+  animation: tileMergeGameboy 0.3s ease-out both !important;
+}
+
+@keyframes tileMergeGameboy {
+  0%   { transform: scale(1.3) rotate(5deg); filter: brightness(1.5) saturate(1.5); }
+  50%  { transform: scale(0.9) rotate(-2deg); }
+  100% { transform: scale(1) rotate(0deg); }
+}
+
+/* ============================================
+   MILESTONE FLASH + PARTICLES
+   ============================================ */
+@keyframes milestoneFlash {
+  0%   { transform: scale(1); }
+  30%  { transform: scale(1.15); filter: brightness(1.8); }
+  100% { transform: scale(1); filter: brightness(1); }
+}
+
+.milestone-flash {
+  animation: milestoneFlash 0.5s ease !important;
+}
+
+.particle {
+  position: fixed;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  pointer-events: none;
+  animation: particleFade 0.9s ease-out forwards;
+  z-index: 9999;
+}
+
+@keyframes particleFade {
+  0%   { transform: translate(0,0) scale(1); opacity: 1; }
+  100% { transform: translate(var(--dx),var(--dy)) scale(0); opacity: 0; }
+}
+
+/* ============================================
+   AWS SKIN LABEL
+   ============================================ */
+.aws-label {
+  display: block;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 8px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  opacity: 0.85;
+  margin-top: 2px;
+  line-height: 1;
+}
+
+/* ============================================
+   VERSION STAMP
+   ============================================ */
+.version-stamp {
+  font-family: 'Orbitron', monospace;
+  font-size: 10px;
+  text-align: right;
+  margin-top: 8px;
+  letter-spacing: 1px;
+}
+
+body.theme-cyber .version-stamp  { color: rgba(0,212,255,0.3); }
+body.theme-gameboy .version-stamp { color: rgba(255,107,157,0.4); }
+
+/* ============================================
+   TRANSITIONS
+   ============================================ */
+body, .game-container, .score-container, .best-container, .control-btn {
+  transition: background 0.8s ease, border-color 0.5s ease, box-shadow 0.5s ease, color 0.4s ease;
+}
