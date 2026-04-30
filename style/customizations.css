@@ -96,7 +96,6 @@ body.theme-gameboy .keep-playing-button:hover {
   box-shadow: 0 4px 20px rgba(255,107,157,0.4) !important;
   transform: translateY(-2px) !important;
 }
-
 /* ============================================
    SPLASH SCREEN
    ============================================ */
@@ -818,4 +817,33 @@ body.theme-gameboy .version-stamp { color: rgba(255,107,157,0.4); }
    ============================================ */
 body, .game-container, .score-container, .best-container, .control-btn {
   transition: background 0.8s ease, border-color 0.5s ease, box-shadow 0.5s ease, color 0.4s ease;
+}
+/* ============================================
+   MOBILE RESPONSIVE
+   ============================================ */
+@media (max-width: 520px) {
+
+  .splash-logo { font-size: 48px !important; letter-spacing: 4px; }
+  .splash-tagline { font-size: 10px; letter-spacing: 3px; }
+  .theme-cards { gap: 12px; }
+  .theme-card { width: 140px; padding: 12px; }
+
+  body.theme-cyber h1.title { font-size: 36px !important; }
+
+  .custom-controls { gap: 6px; }
+  .control-btn { font-size: 9px !important; padding: 8px 10px !important; }
+
+  .stats-panel { gap: 6px; padding: 8px 10px; }
+  .stat-value { font-size: 13px; }
+  .stat-label { font-size: 7px; }
+
+  .game-container { border-radius: 10px !important; }
+
+  .achievement-title { font-size: 64px; }
+}
+
+@media (max-width: 380px) {
+  .theme-card { width: 120px; }
+  .splash-logo { font-size: 38px !important; }
+  .stat-item { min-width: 44px; }
 }
