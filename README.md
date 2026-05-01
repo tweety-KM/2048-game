@@ -3,7 +3,7 @@
 A fully customised 2048 game deployed via AWS CI/CD pipeline.
 
 ## 🚀 Live Demo
-> http://54.144.241.103/
+> http://54.198.135.133
 
 ## 🛠️ Tech Stack
 - **Frontend:** Vanilla JS, CSS3 Animations, Orbitron Font
