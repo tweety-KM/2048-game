@@ -10,8 +10,8 @@ phases:
 
   build:
     commands:
-      - echo Building Docker image...
-      - docker build -t $ECR_REPO_URI:latest .
+      - echo Building Docker image for linux/amd64...
+      - docker build --platform linux/amd64 -t $ECR_REPO_URI:latest .
       - docker tag $ECR_REPO_URI:latest $ECR_REPO_URI:$IMAGE_TAG
 
   post_build:
@@ -19,7 +19,6 @@ phases:
       - echo Pushing image to ECR...
       - docker push $ECR_REPO_URI:latest
       - docker push $ECR_REPO_URI:$IMAGE_TAG
-      - echo Writing image definitions file...
       - printf '[{"name":"2048-game","imageUri":"%s"}]' $ECR_REPO_URI:$IMAGE_TAG > imagedefinitions.json
 
 artifacts:
