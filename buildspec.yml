@@ -10,8 +10,8 @@ phases:
 
   build:
     commands:
-      - echo Building Docker image for linux/amd64...
-      - docker build --platform linux/amd64 -t $ECR_REPO_URI:latest .
+      - echo Building Docker image for linux/arm64...
+      - docker build --platform linux/arm64 -t $ECR_REPO_URI:latest .
       - docker tag $ECR_REPO_URI:latest $ECR_REPO_URI:$IMAGE_TAG
 
   post_build:
