@@ -194,21 +194,31 @@
   // ============================================
   // TIMER
   // ============================================
+  let timerInterval = null;
+
   function startTimer() {
-    setInterval(() => {
+    if (timerInterval) {
+      clearInterval(timerInterval);
+    }
+
+    timerInterval = setInterval(() => {
       const elapsed = Math.floor((Date.now() - stats.startTime) / 1000);
       const m = String(Math.floor(elapsed / 60)).padStart(2, '0');
       const s = String(elapsed % 60).padStart(2, '0');
       const el = document.getElementById('gameTimer');
       if (el) el.textContent = `${m}:${s}`;
     }, 1000);
+
+    // Immediately update timer display
+    const gt = document.getElementById('gameTimer');
+    if (gt) gt.textContent = '00:00';
   }
 
   function resetStats() {
     stats = { moves: 0, merges: 0, startTime: Date.now() };
     seenTiles.clear();
     localStorage.removeItem('seenTiles');
-    ['moveCount','mergeCount','efficiencyScore','gameTimer'].forEach(id => {
+    ['moveCount','mergeCount','efficiencyScore'].forEach(id => {
       const el = document.getElementById(id);
       if (el) el.textContent = id === 'efficiencyScore' ? '—' : '0';
     });
@@ -232,7 +242,9 @@
       // Wrap move
       const origMove = gm.move.bind(gm);
       gm.move = function (direction) {
-        origMove(direction);
+        const moved = origMove(direction);
+        if (!moved) return moved;
+
         stats.moves++;
         const mc = document.getElementById('moveCount');
         if (mc) mc.textContent = stats.moves;
@@ -246,6 +258,8 @@
           if (settings.awsSkin)   applyAwsSkin();
           if (settings.ghostMode) updateGhostHint();
         }, 260);
+
+        return moved;
       };
 
       // Wrap restart

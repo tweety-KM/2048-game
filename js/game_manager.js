@@ -188,6 +188,8 @@ GameManager.prototype.move = function (direction) {
 
     this.actuate();
   }
+
+  return moved;
 };
 
 // Get the vector representing the chosen direction
