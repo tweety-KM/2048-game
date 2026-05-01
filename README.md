@@ -1,7 +1,5 @@
 # 2048 — Futuristic Edition
 
-![Pipeline](https://us-east-1.codepipeline.amazonaws.com/badges/v1/pipeline/2048-pipeline/badge.svg)
-
 A fully customised 2048 game deployed via AWS CI/CD pipeline.
 
 ## 🚀 Live Demo
