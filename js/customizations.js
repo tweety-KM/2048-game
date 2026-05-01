@@ -306,3 +306,14 @@
       }, 400);
     }, 100);
   }
+
+  // ============================================
+  // BOOT
+  // ============================================
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initSplash);
+  } else {
+    initSplash();
+  }
+
+})();
