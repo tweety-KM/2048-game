@@ -5,18 +5,16 @@
 
 (function () {
 
-  // ============================================
-  // STATE
-  // ============================================
   const settings = {
-    theme:     localStorage.getItem('cfg_theme')    || null,
+    theme:     localStorage.getItem('cfg_theme') || null,
     ghostMode: JSON.parse(localStorage.getItem('cfg_ghostMode') || 'false'),
     awsSkin:   JSON.parse(localStorage.getItem('cfg_awsSkin')   || 'false')
   };
 
-  let stats = { moves: 0, merges: 0, startTime: null };
+  let stats = { moves: 0, merges: 0 };
   let timerInterval = null;
-  const seenTiles = new Set(JSON.parse(localStorage.getItem('seenTiles') || '[]'));
+  let timerStart    = null;
+  const seenTiles   = new Set(JSON.parse(localStorage.getItem('seenTiles') || '[]'));
   let achievement4096Shown = JSON.parse(localStorage.getItem('achievement4096') || 'false');
 
   const personalBest = {
@@ -39,21 +37,18 @@
 
   const milestoneColors = {
     8:'#00d4ff', 16:'#7b2fff', 32:'#e94560', 64:'#ff6b9d',
-    128:'#00ff96', 256:'#ffd700', 512:'#60a5ff', 1024:'#f5a623',
-    2048:'#ffffff', 4096:'#c4878f'
+    128:'#00ff96', 256:'#ffd700', 512:'#60a5ff',
+    1024:'#f5a623', 2048:'#ffffff', 4096:'#c4878f'
   };
 
-  // ============================================
-  // TIMER — fully controlled, resets properly
-  // ============================================
+  // ── TIMER ──
   function startTimer() {
     stopTimer();
-    stats.startTime = Date.now();
+    timerStart = Date.now();
     const el = document.getElementById('gameTimer');
     if (el) el.textContent = '00:00';
     timerInterval = setInterval(() => {
-      if (!stats.startTime) return;
-      const elapsed = Math.floor((Date.now() - stats.startTime) / 1000);
+      const elapsed = Math.floor((Date.now() - timerStart) / 1000);
       const m = String(Math.floor(elapsed / 60)).padStart(2, '0');
       const s = String(elapsed % 60).padStart(2, '0');
       const tel = document.getElementById('gameTimer');
@@ -62,34 +57,22 @@
   }
 
   function stopTimer() {
-    if (timerInterval) {
-      clearInterval(timerInterval);
-      timerInterval = null;
-    }
+    clearInterval(timerInterval);
+    timerInterval = null;
+    timerStart    = null;
   }
 
-  function resetTimer() {
-    stopTimer();
-    stats.startTime = null;
-    const el = document.getElementById('gameTimer');
-    if (el) el.textContent = '00:00';
-  }
-
-  // ============================================
-  // THEME SPLASH
-  // ============================================
+  // ── SPLASH ──
   function initSplash() {
     const splash = document.getElementById('themeSplash');
     if (!splash) return;
-
     if (settings.theme) {
       splash.style.display = 'none';
       applyTheme(settings.theme);
       initGame();
       return;
     }
-
-    document.getElementById('selectCyber').addEventListener('click', () => chooseTheme('cyber'));
+    document.getElementById('selectCyber').addEventListener('click',   () => chooseTheme('cyber'));
     document.getElementById('selectGameboy').addEventListener('click', () => chooseTheme('gameboy'));
   }
 
@@ -106,6 +89,7 @@
     document.body.classList.remove('theme-cyber', 'theme-gameboy');
     document.body.classList.add(`theme-${theme}`);
     if (achievement4096Shown) document.body.classList.add('achievement-4096');
+    if (settings.awsSkin) document.body.classList.add('aws-skin-active');
   }
 
   function resetTheme() {
@@ -113,18 +97,15 @@
     location.reload();
   }
 
-  // ============================================
-  // GAME INIT
-  // ============================================
+  // ── INIT ──
   function initGame() {
     injectUI();
-    document.getElementById('personalBest').textContent = personalBest.score.toLocaleString();
+    document.getElementById('personalBest').textContent =
+      personalBest.score.toLocaleString();
     hookGameManager();
   }
 
-  // ============================================
-  // INJECT UI
-  // ============================================
+  // ── UI ──
   function injectUI() {
     const container = document.querySelector('.container');
     const aboveGame = document.querySelector('.above-game');
@@ -166,15 +147,14 @@
     container.insertBefore(statsPanel, aboveGame);
 
     const ghostHint = document.createElement('div');
-    ghostHint.id = 'ghostHint';
+    ghostHint.id        = 'ghostHint';
     ghostHint.className = 'ghost-hint';
     ghostHint.innerHTML = `👻 Best move: <span id="ghostDirection">calculating...</span>`;
     ghostHint.style.display = settings.ghostMode ? 'block' : 'none';
     container.insertBefore(ghostHint, aboveGame);
 
     const vStamp = document.createElement('div');
-    vStamp.className = 'version-stamp';
-    vStamp.id = 'versionStamp';
+    vStamp.className  = 'version-stamp';
     vStamp.textContent = `build: ${window.BUILD_HASH || 'local-dev'}`;
     container.appendChild(vStamp);
 
@@ -183,9 +163,7 @@
     document.getElementById('switchThemeBtn').addEventListener('click',  resetTheme);
   }
 
-  // ============================================
-  // TOGGLES
-  // ============================================
+  // ── TOGGLES ──
   function toggleGhostMode() {
     settings.ghostMode = !settings.ghostMode;
     localStorage.setItem('cfg_ghostMode', settings.ghostMode);
@@ -199,83 +177,90 @@
     settings.awsSkin = !settings.awsSkin;
     localStorage.setItem('cfg_awsSkin', settings.awsSkin);
     document.getElementById('awsSkinToggle').classList.toggle('active', settings.awsSkin);
-    applyAwsSkin();
+    // Toggle body class for CSS colour overrides
+    document.body.classList.toggle('aws-skin-active', settings.awsSkin);
+    applyAwsSkinLabels();
   }
 
-  // ============================================
-  // HOOK INTO GAME MANAGER
-  // ============================================
+  // ── HOOK GAME MANAGER ──
   function hookGameManager() {
     const wait = setInterval(() => {
       if (!window.gameManager) return;
       clearInterval(wait);
       const gm = window.gameManager;
 
-      // Start timer on first load
       startTimer();
 
-      // ── Wrap move ──
-      const origMove = gm.move.bind(gm);
-      gm.move = function (direction) {
-        const scoreBefore = gm.score;
-        const gridBefore  = JSON.stringify(gm.grid.cells);
+      // ── Patch move using InputManager events ──
+      // The most reliable hook: patch the actuator's actuate method
+      // which is called AFTER every successful move with the new state
+      const origActuate = gm.actuator.actuate.bind(gm.actuator);
+      let lastScore = 0;
+      let moveRegistered = false;
 
-        origMove(direction);
+      gm.actuator.actuate = function(grid, metadata) {
+        origActuate(grid, metadata);
 
-        // Only count if grid actually changed
-        const gridAfter = JSON.stringify(gm.grid.cells);
-        if (gridAfter === gridBefore) return;
+        // Only count if not a game over/won screen trigger
+        if (!metadata.over && !metadata.won) {
+          // Count move
+          stats.moves++;
+          const mc = document.getElementById('moveCount');
+          if (mc) mc.textContent = stats.moves;
 
-        stats.moves++;
-        const mc = document.getElementById('moveCount');
-        if (mc) mc.textContent = stats.moves;
+          // Count merges via score increase
+          const currentScore = metadata.score || 0;
+          if (currentScore > lastScore) {
+            stats.merges++;
+            const mrc = document.getElementById('mergeCount');
+            if (mrc) mrc.textContent = stats.merges;
+          }
+          lastScore = currentScore;
 
-        const scoreIncrease = gm.score - scoreBefore;
-        if (scoreIncrease > 0) {
-          stats.merges++;
-          const mrc = document.getElementById('mergeCount');
-          if (mrc) mrc.textContent = stats.merges;
+          // Efficiency
+          if (stats.moves > 0 && currentScore > 0) {
+            const ef = document.getElementById('efficiencyScore');
+            if (ef) ef.textContent = Math.round(currentScore / stats.moves);
+          }
+
+          personalBest.update(currentScore);
         }
 
-        if (gm.score > 0 && stats.moves > 0) {
-          const ef = document.getElementById('efficiencyScore');
-          if (ef) ef.textContent = Math.round(gm.score / stats.moves);
-        }
-
-        personalBest.update(gm.score);
+        // Stop timer on game over
+        if (metadata.over) stopTimer();
 
         setTimeout(() => {
           scanForNewTiles();
-          applyAwsSkin();
+          applyAwsSkinLabels();
           if (settings.ghostMode) updateGhostHint();
         }, 260);
       };
 
-      // ── Wrap restart ──
+      // ── Patch restart ──
       const origRestart = gm.restart.bind(gm);
       gm.restart = function () {
         origRestart();
+        lastScore = 0;
         resetStats();
         startTimer();
         setTimeout(() => {
-          applyAwsSkin();
+          applyAwsSkinLabels();
           if (settings.ghostMode) updateGhostHint();
         }, 300);
       };
 
-      // Initial skin + ghost
+      // Initial apply
       setTimeout(() => {
-        applyAwsSkin();
+        applyAwsSkinLabels();
         if (settings.ghostMode) updateGhostHint();
+        if (settings.awsSkin) document.body.classList.add('aws-skin-active');
         if (achievement4096Shown) document.body.classList.add('achievement-4096');
       }, 400);
 
     }, 100);
   }
 
-  // ============================================
-  // RESET STATS
-  // ============================================
+  // ── RESET STATS ──
   function resetStats() {
     stats.moves  = 0;
     stats.merges = 0;
@@ -284,38 +269,30 @@
     document.body.classList.remove('achievement-4096');
     achievement4096Shown = false;
     localStorage.removeItem('achievement4096');
-
-    const ids = { moveCount:'0', mergeCount:'0', efficiencyScore:'—', gameTimer:'00:00' };
-    Object.entries(ids).forEach(([id, val]) => {
+    const resets = { moveCount:'0', mergeCount:'0', efficiencyScore:'—', gameTimer:'00:00' };
+    Object.entries(resets).forEach(([id, val]) => {
       const el = document.getElementById(id);
       if (el) el.textContent = val;
     });
   }
 
-  // ============================================
-  // AWS SKIN — applies label AND unique colour
-  // ============================================
-  function applyAwsSkin() {
+  // ── AWS SKIN LABELS ──
+  function applyAwsSkinLabels() {
     document.querySelectorAll('.tile').forEach(tile => {
-      // Remove old labels
       tile.querySelectorAll('.aws-label').forEach(l => l.remove());
-
+      if (!settings.awsSkin) return;
       const vc = [...tile.classList].find(c => /^tile-\d+$/.test(c));
       if (!vc) return;
       const value = parseInt(vc.replace('tile-', ''));
-
-      if (settings.awsSkin && awsLabels[value]) {
-        const label = document.createElement('span');
-        label.className   = 'aws-label';
-        label.textContent = awsLabels[value];
-        tile.appendChild(label);
-      }
+      if (!awsLabels[value]) return;
+      const label = document.createElement('span');
+      label.className   = 'aws-label';
+      label.textContent = awsLabels[value];
+      tile.appendChild(label);
     });
   }
 
-  // ============================================
-  // MILESTONE DETECTION
-  // ============================================
+  // ── MILESTONE ──
   function scanForNewTiles() {
     document.querySelectorAll('.tile').forEach(tile => {
       const vc = [...tile.classList].find(c => /^tile-\d+$/.test(c));
@@ -341,32 +318,27 @@
     spawnParticles(rect.left + rect.width / 2, rect.top + rect.height / 2, color);
   }
 
-  // ============================================
-  // 4096 ACHIEVEMENT
-  // ============================================
+  // ── 4096 ──
   function triggerAchievement4096() {
     stopTimer();
     const overlay = document.getElementById('achievementOverlay');
-    if (overlay) {
-      overlay.classList.add('show');
-      spawnParticles(window.innerWidth / 2, window.innerHeight / 2, '#c4878f', 30);
-      spawnParticles(window.innerWidth / 2, window.innerHeight / 2, '#ffffff', 20);
-      setTimeout(() => {
-        document.body.classList.add('achievement-4096');
-        overlay.classList.remove('show');
-      }, 3500);
-    }
+    if (!overlay) return;
+    overlay.classList.add('show');
+    spawnParticles(window.innerWidth / 2, window.innerHeight / 2, '#c4878f', 30);
+    spawnParticles(window.innerWidth / 2, window.innerHeight / 2, '#ffffff', 20);
+    setTimeout(() => {
+      document.body.classList.add('achievement-4096');
+      overlay.classList.remove('show');
+    }, 3500);
   }
 
-  // ============================================
-  // PARTICLES
-  // ============================================
+  // ── PARTICLES ──
   function spawnParticles(x, y, color, count = 16) {
     for (let i = 0; i < count; i++) {
       const p = document.createElement('div');
-      p.className = 'particle';
-      p.style.left            = `${x}px`;
-      p.style.top             = `${y}px`;
+      p.className         = 'particle';
+      p.style.left        = `${x}px`;
+      p.style.top         = `${y}px`;
       p.style.backgroundColor = color;
       const angle    = (i / count) * 360;
       const distance = 40 + Math.random() * 60;
@@ -377,9 +349,7 @@
     }
   }
 
-  // ============================================
-  // GHOST MODE
-  // ============================================
+  // ── GHOST ──
   function updateGhostHint() {
     if (!window.gameManager) return;
     const best   = getBestMove(window.gameManager.grid);
@@ -416,9 +386,7 @@
     return bestMove;
   }
 
-  // ============================================
-  // BOOT
-  // ============================================
+  // ── BOOT ──
   document.addEventListener('DOMContentLoaded', initSplash);
 
 })();

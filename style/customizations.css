@@ -847,3 +847,18 @@ body, .game-container, .score-container, .best-container, .control-btn {
   .splash-logo { font-size: 38px !important; }
   .stat-item { min-width: 44px; }
 }
+/* ============================================
+   AWS SKIN TILE COLOURS
+   ============================================ */
+body.aws-skin-active .tile-2   .tile-inner { background: linear-gradient(135deg,#0d1b3e,#1a2a5e) !important; border:1px solid rgba(0,212,255,0.5) !important; box-shadow: 0 0 12px rgba(0,212,255,0.3) !important; color: #c8f0ff !important; }
+body.aws-skin-active .tile-4   .tile-inner { background: linear-gradient(135deg,#1a2200,#334400) !important; border:1px solid rgba(255,153,0,0.6) !important; box-shadow: 0 0 15px rgba(255,153,0,0.4) !important; color: #fff !important; }
+body.aws-skin-active .tile-8   .tile-inner { background: linear-gradient(135deg,#1a2200,#334400) !important; border:1px solid rgba(255,153,0,0.6) !important; box-shadow: 0 0 15px rgba(255,153,0,0.4) !important; color: #fff !important; }
+body.aws-skin-active .tile-16  .tile-inner { background: linear-gradient(135deg,#003366,#004d99) !important; border:1px solid rgba(0,180,255,0.6) !important; box-shadow: 0 0 15px rgba(0,180,255,0.4) !important; color: #fff !important; }
+body.aws-skin-active .tile-32  .tile-inner { background: linear-gradient(135deg,#1a0022,#330044) !important; border:1px solid rgba(200,100,255,0.6) !important; box-shadow: 0 0 15px rgba(200,100,255,0.4) !important; color: #fff !important; }
+body.aws-skin-active .tile-64  .tile-inner { background: linear-gradient(135deg,#002200,#004400) !important; border:1px solid rgba(0,255,100,0.6) !important; box-shadow: 0 0 18px rgba(0,255,100,0.5) !important; color: #fff !important; }
+body.aws-skin-active .tile-128 .tile-inner { background: linear-gradient(135deg,#1a0500,#3d1200) !important; border:1px solid rgba(255,100,0,0.7) !important; box-shadow: 0 0 20px rgba(255,100,0,0.5) !important; color: #fff !important; }
+body.aws-skin-active .tile-256 .tile-inner { background: linear-gradient(135deg,#001a1a,#003333) !important; border:1px solid rgba(0,220,200,0.7) !important; box-shadow: 0 0 20px rgba(0,220,200,0.5) !important; color: #fff !important; }
+body.aws-skin-active .tile-512 .tile-inner { background: linear-gradient(135deg,#220022,#440044) !important; border:1px solid rgba(255,50,200,0.7) !important; box-shadow: 0 0 25px rgba(255,50,200,0.6) !important; color: #fff !important; }
+body.aws-skin-active .tile-1024 .tile-inner { background: linear-gradient(135deg,#1a0d00,#3d2200) !important; border:1px solid rgba(255,160,0,0.8) !important; box-shadow: 0 0 30px rgba(255,160,0,0.6),0 0 60px rgba(255,160,0,0.2) !important; color: #fff !important; }
+body.aws-skin-active .tile-2048 .tile-inner { background: linear-gradient(135deg,#0a0a1a,#000) !important; border:1px solid rgba(255,215,0,0.9) !important; box-shadow: 0 0 40px rgba(255,215,0,0.7),0 0 80px rgba(255,215,0,0.3) !important; animation: rainbowGlow 2s linear infinite !important; color: #fff !important; }
+body.aws-skin-active .tile-4096 .tile-inner { background: linear-gradient(135deg,#b76e79,#c4878f,#d4a0a8) !important; border:1px solid rgba(255,255,255,0.5) !important; box-shadow: 0 0 50px rgba(183,110,121,0.9) !important; animation: roseGoldPulse 1.5s ease-in-out infinite !important; color: #fff !important; }
