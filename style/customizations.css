@@ -784,18 +784,49 @@ body.theme-gameboy .tile-merged .tile-inner {
 }
 
 /* ============================================
-   AWS SKIN LABEL
+   AWS SKIN LABEL — OVERLAY STYLE
    ============================================ */
 .aws-label {
-  display: block;
+  position: absolute;
+  bottom: 6px;
+  left: 0;
+  right: 0;
+  text-align: center;
   font-family: 'Orbitron', sans-serif;
-  font-size: 8px;
+  font-size: 7px;
   font-weight: 700;
   text-transform: uppercase;
-  letter-spacing: 0.5px;
-  opacity: 0.85;
-  margin-top: 2px;
-  line-height: 1;
+  letter-spacing: 1.5px;
+  color: rgba(255,255,255,0.75);
+  pointer-events: none;
+  z-index: 25;
+}
+
+/* Make tile-inner position relative so label sits inside it */
+.tile .tile-inner {
+  position: relative !important;
+}
+
+/* Shift number up slightly when AWS skin is active to make room for label */
+body.aws-skin-active .tile .tile-inner {
+  display: flex !important;
+  flex-direction: column !important;
+  align-items: center !important;
+  justify-content: center !important;
+  padding-bottom: 14px !important;
+}
+
+/* Smaller font for higher numbers to fit with label */
+body.aws-skin-active .tile-1024 .tile-inner,
+body.aws-skin-active .tile-2048 .tile-inner,
+body.aws-skin-active .tile-4096 .tile-inner {
+  font-size: 20px !important;
+  padding-bottom: 16px !important;
+}
+
+/* Game Boy theme label colour */
+body.theme-gameboy.aws-skin-active .aws-label {
+  color: rgba(40, 20, 50, 0.7);
 }
 
 /* ============================================
