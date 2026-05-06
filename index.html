@@ -136,5 +136,21 @@
   <script src="js/local_storage_manager.js"></script>
   <script src="js/game_manager.js"></script>
   <script src="js/application.js"></script>
-<script src="js/customizations.js"></script></body>
+<script src="js/customizations.js"></script>
+<!-- LEADERBOARD MODAL -->
+<div id="leaderboardModal" class="leaderboard-modal">
+  <div class="leaderboard-inner">
+    <div class="leaderboard-header">
+      <span class="leaderboard-title">🏆 LEADERBOARD</span>
+      <button id="closeLeaderboard" class="lb-close">✕</button>
+    </div>
+    <div id="leaderboardList" class="leaderboard-list">
+      <div class="lb-loading">Loading scores...</div>
+    </div>
+    <div class="leaderboard-footer">
+      <input id="lbUsername" class="lb-input" placeholder="Your name" maxlength="16">
+      <button id="lbSubmit" class="lb-submit-btn">Submit Score</button>
+    </div>
+  </div>
+</div></body>
 </html>

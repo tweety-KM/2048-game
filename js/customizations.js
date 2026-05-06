@@ -116,6 +116,7 @@
     controls.innerHTML = `
       <button id="ghostModeToggle" class="control-btn ${settings.ghostMode ? 'active' : ''}">👻 Ghost</button>
       <button id="awsSkinToggle"   class="control-btn ${settings.awsSkin   ? 'active' : ''}">☁️ AWS Skin</button>
+      <button id="leaderboardBtn"  class="control-btn">🏆 Scores</button>
       <button id="switchThemeBtn"  class="control-btn">🎨 Theme</button>
     `;
     container.insertBefore(controls, aboveGame);
@@ -161,6 +162,7 @@
     document.getElementById('ghostModeToggle').addEventListener('click', toggleGhostMode);
     document.getElementById('awsSkinToggle').addEventListener('click',   toggleAwsSkin);
     document.getElementById('switchThemeBtn').addEventListener('click',  resetTheme);
+    document.getElementById('leaderboardBtn').addEventListener('click',  submitScore);
   }
 
   // ── TOGGLES ──
@@ -238,17 +240,26 @@
 
       // ── Patch restart ──
       const origRestart = gm.restart.bind(gm);
-      gm.restart = function () {
-        origRestart();
-        lastScore = 0;
-        resetStats();
-        startTimer();
-        setTimeout(() => {
-          applyAwsSkinLabels();
-          if (settings.ghostMode) updateGhostHint();
-        }, 300);
-      };
+gm.restart = function () {
+    origRestart();
+    resetStats();
+    startTimer();
 
+    // If 4096 was achieved, show theme selector again
+    if (!settings.theme) {
+        const splash = document.getElementById('themeSplash');
+        if (splash) {
+            splash.classList.remove('hidden');
+            splash.style.display = 'flex';
+        }
+        return;
+    }
+
+    setTimeout(() => {
+        applyAwsSkinLabels();
+        if (settings.ghostMode) updateGhostHint();
+    }, 300);
+};
       // Initial apply
       setTimeout(() => {
         applyAwsSkinLabels();
@@ -260,21 +271,30 @@
     }, 100);
   }
 
-  // ── RESET STATS ──
-  function resetStats() {
+ function resetStats() {
     stats.moves  = 0;
     stats.merges = 0;
     seenTiles.clear();
     localStorage.removeItem('seenTiles');
+
+    // Full reset including 4096 achievement and theme
     document.body.classList.remove('achievement-4096');
     achievement4096Shown = false;
     localStorage.removeItem('achievement4096');
-    const resets = { moveCount:'0', mergeCount:'0', efficiencyScore:'—', gameTimer:'00:00' };
+
+    // Reset theme back to splash selector
+    localStorage.removeItem('cfg_theme');
+    settings.theme = null;
+
+    const resets = {
+        moveCount:'0', mergeCount:'0',
+        efficiencyScore:'—', gameTimer:'00:00'
+    };
     Object.entries(resets).forEach(([id, val]) => {
-      const el = document.getElementById(id);
-      if (el) el.textContent = val;
+        const el = document.getElementById(id);
+        if (el) el.textContent = val;
     });
-  }
+}
 
   // ── AWS SKIN LABELS ──
   function applyAwsSkinLabels() {
@@ -385,7 +405,69 @@
     });
     return bestMove;
   }
+// ============================================
+// LEADERBOARD — localStorage based for now
+// Swap API_URL for real Lambda later
+// ============================================
+function openLeaderboard() {
+    const modal = document.getElementById('leaderboardModal');
+    if (modal) modal.classList.add('open');
+    renderLeaderboard();
+}
 
+function closeLeaderboard() {
+    const modal = document.getElementById('leaderboardModal');
+    if (modal) modal.classList.remove('open');
+}
+
+function getScores() {
+    return JSON.parse(localStorage.getItem('lb_scores') || '[]');
+}
+
+function saveScores(scores) {
+    localStorage.setItem('lb_scores', JSON.stringify(scores));
+}
+
+function submitScore() {
+    const input = document.getElementById('lbUsername');
+    const name  = input ? input.value.trim() : '';
+    if (!name) { alert('Please enter your name'); return; }
+    const score = window.gameManager ? window.gameManager.score : 0;
+    if (score === 0) { alert('Play a game first!'); return; }
+
+    const scores = getScores();
+    const existing = scores.findIndex(s => s.name === name);
+    if (existing >= 0) {
+        if (score > scores[existing].score) scores[existing].score = score;
+    } else {
+        scores.push({ name, score });
+    }
+    scores.sort((a, b) => b.score - a.score);
+    saveScores(scores.slice(0, 10));
+    renderLeaderboard();
+    if (input) input.value = '';
+}
+
+function renderLeaderboard() {
+    const list   = document.getElementById('leaderboardList');
+    if (!list) return;
+    const scores = getScores();
+    const medals = ['🥇', '🥈', '🥉'];
+    const rankClass = ['lb-gold', 'lb-silver', 'lb-bronze'];
+
+    if (scores.length === 0) {
+        list.innerHTML = `<div class="lb-loading">No scores yet — play a game!</div>`;
+        return;
+    }
+
+    list.innerHTML = scores.map((s, i) => `
+        <div class="lb-entry ${rankClass[i] || ''}">
+            <span class="lb-rank">${medals[i] || `#${i+1}`}</span>
+            <span class="lb-name">${s.name}</span>
+            <span class="lb-score">${s.score.toLocaleString()}</span>
+        </div>
+    `).join('');
+}
   // ── BOOT ──
   document.addEventListener('DOMContentLoaded', initSplash);
 
