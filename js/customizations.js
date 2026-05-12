@@ -406,68 +406,90 @@ gm.restart = function () {
     return bestMove;
   }
 // ============================================
-// LEADERBOARD — localStorage based for now
-// Swap API_URL for real Lambda later
-// ============================================
-function openLeaderboard() {
+  // LEADERBOARD
+  // ============================================
+  const API_URL = 'https://sy88ht4y16.execute-api.us-east-1.amazonaws.com/scores';
+
+  function openLeaderboard() {
     const modal = document.getElementById('leaderboardModal');
     if (modal) modal.classList.add('open');
     renderLeaderboard();
-}
+  }
 
-function closeLeaderboard() {
+  function closeLeaderboard() {
     const modal = document.getElementById('leaderboardModal');
     if (modal) modal.classList.remove('open');
-}
+  }
 
-function getScores() {
-    return JSON.parse(localStorage.getItem('lb_scores') || '[]');
-}
+  async function submitScore() {
+    const nameInput    = document.getElementById('lbUsername');
+    const countryInput = document.getElementById('lbCountry');
+    const name         = nameInput    ? nameInput.value.trim()    : '';
+    const country      = countryInput ? countryInput.value.trim() : '🌍';
 
-function saveScores(scores) {
-    localStorage.setItem('lb_scores', JSON.stringify(scores));
-}
+    if (!name) {
+      nameInput.focus();
+      nameInput.placeholder = 'Enter name first!';
+      setTimeout(() => { nameInput.placeholder = 'Your name'; }, 2000);
+      return;
+    }
 
-function submitScore() {
-    const input = document.getElementById('lbUsername');
-    const name  = input ? input.value.trim() : '';
-    if (!name) { alert('Please enter your name'); return; }
     const score = window.gameManager ? window.gameManager.score : 0;
-    if (score === 0) { alert('Play a game first!'); return; }
-
-    const scores = getScores();
-    const existing = scores.findIndex(s => s.name === name);
-    if (existing >= 0) {
-        if (score > scores[existing].score) scores[existing].score = score;
-    } else {
-        scores.push({ name, score });
+    if (score === 0) {
+      const list = document.getElementById('leaderboardList');
+      if (list) list.innerHTML = `<div class="lb-loading">Play a game first to submit a score!</div>`;
+      return;
     }
-    scores.sort((a, b) => b.score - a.score);
-    saveScores(scores.slice(0, 10));
-    renderLeaderboard();
-    if (input) input.value = '';
-}
 
-function renderLeaderboard() {
-    const list   = document.getElementById('leaderboardList');
+    const btn = document.getElementById('lbSubmit');
+    if (btn) { btn.textContent = 'Saving...'; btn.disabled = true; }
+
+    try {
+      await fetch(API_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, score, country })
+      });
+      if (nameInput)    nameInput.value    = '';
+      if (countryInput) countryInput.value = '';
+      await renderLeaderboard();
+    } catch (err) {
+      console.error('Submit error:', err);
+      const list = document.getElementById('leaderboardList');
+      if (list) list.innerHTML = `<div class="lb-loading">Could not save. Check connection.</div>`;
+    } finally {
+      if (btn) { btn.textContent = 'Submit'; btn.disabled = false; }
+    }
+  }
+
+  async function renderLeaderboard() {
+    const list = document.getElementById('leaderboardList');
     if (!list) return;
-    const scores = getScores();
-    const medals = ['🥇', '🥈', '🥉'];
-    const rankClass = ['lb-gold', 'lb-silver', 'lb-bronze'];
+    list.innerHTML = `<div class="lb-loading">Loading...</div>`;
 
-    if (scores.length === 0) {
-        list.innerHTML = `<div class="lb-loading">No scores yet — play a game!</div>`;
+    try {
+      const res    = await fetch(API_URL);
+      const scores = await res.json();
+      const medals     = ['🥇','🥈','🥉'];
+      const rankClass  = ['lb-gold','lb-silver','lb-bronze'];
+
+      if (!scores || !scores.length) {
+        list.innerHTML = `<div class="lb-loading">No scores yet — be first!</div>`;
         return;
-    }
+      }
 
-    list.innerHTML = scores.map((s, i) => `
+      list.innerHTML = scores.map((s, i) => `
         <div class="lb-entry ${rankClass[i] || ''}">
-            <span class="lb-rank">${medals[i] || `#${i+1}`}</span>
-            <span class="lb-name">${s.name}</span>
-            <span class="lb-score">${s.score.toLocaleString()}</span>
+          <span class="lb-rank">${medals[i] || `#${i+1}`}</span>
+          <span class="lb-flag">${s.country || '🌍'}</span>
+          <span class="lb-name">${s.name}</span>
+          <span class="lb-score">${Number(s.score).toLocaleString()}</span>
         </div>
-    `).join('');
-}
+      `).join('');
+    } catch (err) {
+      list.innerHTML = `<div class="lb-loading">Could not load scores.</div>`;
+    }
+  }
   // ── BOOT ──
   document.addEventListener('DOMContentLoaded', initSplash);
 
