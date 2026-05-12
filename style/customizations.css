@@ -1375,3 +1375,31 @@ body.theme-gameboy .lb-submit-btn:hover {
   background: rgba(255,107,157,0.22);
   transform: translateY(-1px);
 }
+/* ============================================
+   AWS SKIN — SVG ICONS INSIDE TILES
+   ============================================ */
+body.aws-skin-active .tile .tile-inner {
+  flex-direction: column !important;
+  padding-bottom: 10px !important;
+  gap: 2px !important;
+}
+
+body.aws-skin-active .tile .aws-icon {
+  width: 38px;
+  height: 38px;
+  opacity: 0.88;
+  flex-shrink: 0;
+}
+
+body.aws-skin-active .tile-1024 .aws-icon,
+body.aws-skin-active .tile-2048 .aws-icon,
+body.aws-skin-active .tile-4096 .aws-icon {
+  width: 32px;
+  height: 32px;
+}
+
+body.aws-skin-active .tile-1024 .tile-inner,
+body.aws-skin-active .tile-2048 .tile-inner,
+body.aws-skin-active .tile-4096 .tile-inner {
+  font-size: 16px !important;
+}

@@ -293,19 +293,138 @@ gm.restart = function () {
     }, 100);
   }
 
-  // ── AWS SKIN LABELS ──
+ // ── AWS SKIN ICONS ──
+  const awsIcons = {
+    2: `<svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="6" y="22" width="26" height="22" rx="3" stroke="white" stroke-width="2.5" fill="none"/>
+      <path d="M11 22v-7a8 8 0 0116 0v7" stroke="white" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <circle cx="19" cy="32" r="3.5" stroke="white" stroke-width="2" fill="none"/>
+      <line x1="19" y1="35.5" x2="19" y2="40" stroke="white" stroke-width="2" stroke-linecap="round"/>
+      <line x1="36" y1="24" x2="52" y2="24" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="36" y1="31" x2="52" y2="31" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="36" y1="38" x2="48" y2="38" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+    </svg>`,
+
+    4: `<svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M12 20 L16 48 L40 48 L44 20 Z" stroke="white" stroke-width="2.5" fill="none" stroke-linejoin="round"/>
+      <ellipse cx="28" cy="20" rx="16" ry="5" stroke="white" stroke-width="2.5" fill="none"/>
+      <path d="M20 15 Q28 6 36 15" stroke="white" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <circle cx="20" cy="15" r="2.5" fill="white"/>
+      <circle cx="36" cy="15" r="2.5" fill="white"/>
+    </svg>`,
+
+    8: `<svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="20" y="12" width="26" height="26" rx="3" stroke="white" stroke-width="2" fill="none" opacity="0.55"/>
+      <rect x="10" y="18" width="26" height="26" rx="3" stroke="white" stroke-width="2.5" fill="none"/>
+      <rect x="15" y="23" width="16" height="16" rx="2" stroke="white" stroke-width="2" fill="none"/>
+      <line x1="17" y1="14" x2="17" y2="18" stroke="white" stroke-width="2" stroke-linecap="round"/>
+      <line x1="23" y1="14" x2="23" y2="18" stroke="white" stroke-width="2" stroke-linecap="round"/>
+      <line x1="29" y1="14" x2="29" y2="18" stroke="white" stroke-width="2" stroke-linecap="round"/>
+      <line x1="17" y1="44" x2="17" y2="48" stroke="white" stroke-width="2" stroke-linecap="round"/>
+      <line x1="23" y1="44" x2="23" y2="48" stroke="white" stroke-width="2" stroke-linecap="round"/>
+      <line x1="29" y1="44" x2="29" y2="48" stroke="white" stroke-width="2" stroke-linecap="round"/>
+      <line x1="6" y1="25" x2="10" y2="25" stroke="white" stroke-width="2" stroke-linecap="round"/>
+      <line x1="6" y1="31" x2="10" y2="31" stroke="white" stroke-width="2" stroke-linecap="round"/>
+      <line x1="6" y1="37" x2="10" y2="37" stroke="white" stroke-width="2" stroke-linecap="round"/>
+    </svg>`,
+
+    16: `<svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="28" cy="22" rx="12" ry="5" stroke="white" stroke-width="2.5" fill="none"/>
+      <path d="M16 22v12c0 2.8 5.4 5 12 5s12-2.2 12-5V22" stroke="white" stroke-width="2.5" fill="none"/>
+      <path d="M16 28c0 2.8 5.4 5 12 5s12-2.2 12-5" stroke="white" stroke-width="1.5" fill="none" stroke-dasharray="2 2"/>
+      <line x1="8" y1="18" x2="12" y2="22" stroke="white" stroke-width="2" stroke-linecap="round"/>
+      <line x1="8" y1="22" x2="12" y2="22" stroke="white" stroke-width="2" stroke-linecap="round"/>
+      <line x1="48" y1="18" x2="44" y2="22" stroke="white" stroke-width="2" stroke-linecap="round"/>
+      <line x1="48" y1="22" x2="44" y2="22" stroke="white" stroke-width="2" stroke-linecap="round"/>
+      <line x1="8" y1="38" x2="12" y2="34" stroke="white" stroke-width="2" stroke-linecap="round"/>
+      <line x1="8" y1="34" x2="12" y2="34" stroke="white" stroke-width="2" stroke-linecap="round"/>
+      <line x1="48" y1="38" x2="44" y2="34" stroke="white" stroke-width="2" stroke-linecap="round"/>
+      <line x1="48" y1="34" x2="44" y2="34" stroke="white" stroke-width="2" stroke-linecap="round"/>
+    </svg>`,
+
+    32: `<svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="28" cy="28" r="20" stroke="white" stroke-width="2.5" fill="none"/>
+      <rect x="19" y="19" width="18" height="18" rx="3" stroke="white" stroke-width="2.5" fill="none"/>
+      <path d="M8 28 L19 28" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+      <path d="M37 28 L48 28" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+      <polygon points="14,25 19,28 14,31" fill="white"/>
+      <polygon points="42,25 37,28 42,31" fill="white"/>
+    </svg>`,
+
+    64: `<svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="22" cy="28" r="18" stroke="white" stroke-width="2.5" fill="none"/>
+      <path d="M18 22 L26 22 L22 28 L26 34 L18 34" stroke="white" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <line x1="40" y1="20" x2="50" y2="20" stroke="white" stroke-width="2" stroke-linecap="round"/>
+      <line x1="40" y1="28" x2="50" y2="28" stroke="white" stroke-width="2" stroke-linecap="round"/>
+      <line x1="40" y1="36" x2="50" y2="36" stroke="white" stroke-width="2" stroke-linecap="round"/>
+      <circle cx="50" cy="20" r="3" stroke="white" stroke-width="2" fill="none"/>
+      <circle cx="50" cy="28" r="3" stroke="white" stroke-width="2" fill="none"/>
+      <circle cx="50" cy="36" r="3" stroke="white" stroke-width="2" fill="none"/>
+      <line x1="40" y1="20" x2="34" y2="24" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="40" y1="28" x2="34" y2="28" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="40" y1="36" x2="34" y2="32" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+    </svg>`,
+
+    128: `<svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <polygon points="28,6 44,15 44,33 28,42 12,33 12,15" stroke="white" stroke-width="2.5" fill="none" stroke-linejoin="round"/>
+      <polygon points="28,14 38,20 38,32 28,38 18,32 18,20" stroke="white" stroke-width="2" fill="none" stroke-linejoin="round"/>
+    </svg>`,
+
+    256: `<svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <polygon points="28,6 44,15 44,33 28,42 12,33 12,15" stroke="white" stroke-width="2.5" fill="none" stroke-linejoin="round"/>
+      <polygon points="28,14 38,20 38,32 28,38 18,32 18,20" stroke="white" stroke-width="2" fill="none" stroke-linejoin="round"/>
+      <path d="M28 20 L28 38 M20 24 L28 20 L36 24" stroke="white" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>`,
+
+    512: `<svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <polygon points="28,6 44,15 44,33 28,42 12,33 12,15" stroke="white" stroke-width="2.5" fill="none" stroke-linejoin="round"/>
+      <polygon points="28,14 38,20 38,32 28,38 18,32 18,20" stroke="white" stroke-width="2" fill="none" stroke-linejoin="round"/>
+      <text x="22" y="32" font-family="Arial Black, sans-serif" font-size="14" font-weight="900" fill="white">K</text>
+    </svg>`,
+
+    1024: `<svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M10 46 L22 14 L28 28 M28 28 L34 14 L46 46" stroke="white" stroke-width="3.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>`,
+
+    2048: `<svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M38 30 H44 A12 12 0 0 0 32 10 A14 14 0 0 0 10 22 A10 10 0 0 0 14 42 H38" stroke="white" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+      <path d="M22 36 L28 46 L34 36" stroke="white" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M16 26 Q22 20 28 26 Q34 32 40 26" stroke="white" stroke-width="2" fill="none" stroke-linecap="round"/>
+    </svg>`,
+
+    4096: `<svg viewBox="0 0 56 56" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="28" cy="28" r="20" stroke="white" stroke-width="2.5" fill="none"/>
+      <path d="M28 8 C22 14 19 21 19 28 S22 42 28 48" stroke="white" stroke-width="2" fill="none"/>
+      <path d="M28 8 C34 14 37 21 37 28 S34 42 28 48" stroke="white" stroke-width="2" fill="none"/>
+      <line x1="8" y1="28" x2="48" y2="28" stroke="white" stroke-width="2" stroke-linecap="round"/>
+      <line x1="10" y1="19" x2="46" y2="19" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="10" y1="37" x2="46" y2="37" stroke="white" stroke-width="1.5" stroke-linecap="round"/>
+    </svg>`
+  };
+
   function applyAwsSkinLabels() {
     document.querySelectorAll('.tile').forEach(tile => {
-      tile.querySelectorAll('.aws-label').forEach(l => l.remove());
+      tile.querySelectorAll('.aws-label, .aws-icon').forEach(l => l.remove());
       if (!settings.awsSkin) return;
       const vc = [...tile.classList].find(c => /^tile-\d+$/.test(c));
       if (!vc) return;
       const value = parseInt(vc.replace('tile-', ''));
       if (!awsLabels[value]) return;
+
+      // Inject icon
+      if (awsIcons[value]) {
+        const iconWrapper = document.createElement('div');
+        iconWrapper.className = 'aws-icon';
+        iconWrapper.innerHTML = awsIcons[value];
+        iconWrapper.querySelector('svg').style.cssText = 'width:100%;height:100%';
+        tile.querySelector('.tile-inner').prepend(iconWrapper);
+      }
+
+      // Inject label
       const label = document.createElement('span');
       label.className   = 'aws-label';
       label.textContent = awsLabels[value];
-      tile.appendChild(label);
+      tile.querySelector('.tile-inner').appendChild(label);
     });
   }
 
@@ -411,16 +530,23 @@ gm.restart = function () {
     const modal = document.getElementById('leaderboardModal');
     if (modal) modal.classList.add('open');
 
-    // Disable game keyboard listener so all keys reach the input
-    if (window.gameManager && window.gameManager.inputManager) {
-        window.gameManager.inputManager.listen = false;
+    // Stop ALL keyboard events from reaching the game
+    const input = document.getElementById('lbUsername');
+    if (input) {
+        input.addEventListener('keydown', function(e) {
+            e.stopPropagation();
+            e.stopImmediatePropagation();
+        }, true);
+        input.addEventListener('keyup', function(e) {
+            e.stopPropagation();
+            e.stopImmediatePropagation();
+        }, true);
+        input.addEventListener('keypress', function(e) {
+            e.stopPropagation();
+            e.stopImmediatePropagation();
+        }, true);
+        setTimeout(() => input.focus(), 100);
     }
-
-    // Focus the name input automatically
-    setTimeout(() => {
-        const input = document.getElementById('lbUsername');
-        if (input) input.focus();
-    }, 100);
 
     renderLeaderboard();
 }
