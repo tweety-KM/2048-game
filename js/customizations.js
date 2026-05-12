@@ -103,6 +103,12 @@
     document.getElementById('personalBest').textContent =
       personalBest.score.toLocaleString();
     hookGameManager();
+    document.addEventListener('keydown', function(e) {
+    const modal = document.getElementById('leaderboardModal');
+    if (e.key === 'Escape' && modal && modal.classList.contains('open')) {
+        closeLeaderboard();
+    }
+});
   }
 
   // ── UI ──
@@ -160,9 +166,11 @@
     container.appendChild(vStamp);
 
     document.getElementById('ghostModeToggle').addEventListener('click', toggleGhostMode);
-    document.getElementById('awsSkinToggle').addEventListener('click',   toggleAwsSkin);
-    document.getElementById('switchThemeBtn').addEventListener('click',  resetTheme);
-    document.getElementById('leaderboardBtn').addEventListener('click',  submitScore);
+document.getElementById('awsSkinToggle').addEventListener('click',   toggleAwsSkin);
+document.getElementById('leaderboardBtn').addEventListener('click',  openLeaderboard);
+document.getElementById('switchThemeBtn').addEventListener('click',  resetTheme);
+document.getElementById('closeLeaderboard').addEventListener('click', closeLeaderboard);
+document.getElementById('lbSubmit').addEventListener('click',        submitScore);
   }
 
   // ── TOGGLES ──
@@ -241,60 +249,49 @@
       // ── Patch restart ──
       const origRestart = gm.restart.bind(gm);
 gm.restart = function () {
-    origRestart();
-    resetStats();
-    startTimer();
+  origRestart();
 
-    // If 4096 was achieved, show theme selector again
-    if (!settings.theme) {
-        const splash = document.getElementById('themeSplash');
-        if (splash) {
-            splash.classList.remove('hidden');
-            splash.style.display = 'flex';
-        }
-        return;
+  // Always do a full reset
+  stats.moves  = 0;
+  stats.merges = 0;
+  seenTiles.clear();
+  localStorage.removeItem('seenTiles');
+
+  // Clear 4096 achievement fully
+  document.body.classList.remove('achievement-4096');
+  achievement4096Shown = false;
+  localStorage.removeItem('achievement4096');
+
+  // Clear theme so splash reappears
+  localStorage.removeItem('cfg_theme');
+  settings.theme = null;
+
+  // Reset all stat displays
+  const resets = {
+    moveCount:'0', mergeCount:'0',
+    efficiencyScore:'—', gameTimer:'00:00'
+  };
+  Object.entries(resets).forEach(([id, val]) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = val;
+  });
+
+  // Reset timer
+  stopTimer();
+
+  // Show theme splash after short delay
+  setTimeout(() => {
+    const splash = document.getElementById('themeSplash');
+    if (splash) {
+      document.body.classList.remove('theme-cyber', 'theme-gameboy');
+      splash.classList.remove('hidden');
+      splash.style.display = 'flex';
+      splash.style.opacity = '1';
     }
-
-    setTimeout(() => {
-        applyAwsSkinLabels();
-        if (settings.ghostMode) updateGhostHint();
-    }, 300);
+  }, 200);
 };
-      // Initial apply
-      setTimeout(() => {
-        applyAwsSkinLabels();
-        if (settings.ghostMode) updateGhostHint();
-        if (settings.awsSkin) document.body.classList.add('aws-skin-active');
-        if (achievement4096Shown) document.body.classList.add('achievement-4096');
-      }, 400);
-
     }, 100);
   }
-
- function resetStats() {
-    stats.moves  = 0;
-    stats.merges = 0;
-    seenTiles.clear();
-    localStorage.removeItem('seenTiles');
-
-    // Full reset including 4096 achievement and theme
-    document.body.classList.remove('achievement-4096');
-    achievement4096Shown = false;
-    localStorage.removeItem('achievement4096');
-
-    // Reset theme back to splash selector
-    localStorage.removeItem('cfg_theme');
-    settings.theme = null;
-
-    const resets = {
-        moveCount:'0', mergeCount:'0',
-        efficiencyScore:'—', gameTimer:'00:00'
-    };
-    Object.entries(resets).forEach(([id, val]) => {
-        const el = document.getElementById(id);
-        if (el) el.textContent = val;
-    });
-}
 
   // ── AWS SKIN LABELS ──
   function applyAwsSkinLabels() {
@@ -413,14 +410,29 @@ gm.restart = function () {
   function openLeaderboard() {
     const modal = document.getElementById('leaderboardModal');
     if (modal) modal.classList.add('open');
-    renderLeaderboard();
-  }
 
-  function closeLeaderboard() {
+    // Disable game keyboard listener so all keys reach the input
+    if (window.gameManager && window.gameManager.inputManager) {
+        window.gameManager.inputManager.listen = false;
+    }
+
+    // Focus the name input automatically
+    setTimeout(() => {
+        const input = document.getElementById('lbUsername');
+        if (input) input.focus();
+    }, 100);
+
+    renderLeaderboard();
+}
+ function closeLeaderboard() {
     const modal = document.getElementById('leaderboardModal');
     if (modal) modal.classList.remove('open');
-  }
 
+    // Re-enable game keyboard listener
+    if (window.gameManager && window.gameManager.inputManager) {
+        window.gameManager.inputManager.listen = true;
+    }
+}
   async function submitScore() {
     const nameInput    = document.getElementById('lbUsername');
     const countryInput = document.getElementById('lbCountry');
