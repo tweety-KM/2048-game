@@ -559,47 +559,56 @@ gm.restart = function () {
         window.gameManager.inputManager.listen = true;
     }
 }
-  async function submitScore() {
+async function submitScore() {
     const nameInput    = document.getElementById('lbUsername');
     const countryInput = document.getElementById('lbCountry');
     const name         = nameInput    ? nameInput.value.trim()    : '';
     const country      = countryInput ? countryInput.value.trim() : '🌍';
 
+    // Highlight input if name is empty
     if (!name) {
-      nameInput.focus();
-      nameInput.placeholder = 'Enter name first!';
-      setTimeout(() => { nameInput.placeholder = 'Your name'; }, 2000);
-      return;
+        if (nameInput) {
+            nameInput.style.borderColor = 'rgba(255,50,50,0.8)';
+            nameInput.placeholder = 'Enter your name!';
+            nameInput.focus();
+            setTimeout(() => {
+                nameInput.style.borderColor = '';
+                nameInput.placeholder = 'Your name';
+            }, 2000);
+        }
+        return;
     }
 
     const score = window.gameManager ? window.gameManager.score : 0;
-    if (score === 0) {
-      const list = document.getElementById('leaderboardList');
-      if (list) list.innerHTML = `<div class="lb-loading">Play a game first to submit a score!</div>`;
-      return;
-    }
 
     const btn = document.getElementById('lbSubmit');
     if (btn) { btn.textContent = 'Saving...'; btn.disabled = true; }
 
-    try {
-      await fetch(API_URL, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, score, country })
-      });
-      if (nameInput)    nameInput.value    = '';
-      if (countryInput) countryInput.value = '';
-      await renderLeaderboard();
-    } catch (err) {
-      console.error('Submit error:', err);
-      const list = document.getElementById('leaderboardList');
-      if (list) list.innerHTML = `<div class="lb-loading">Could not save. Check connection.</div>`;
-    } finally {
-      if (btn) { btn.textContent = 'Submit'; btn.disabled = false; }
-    }
-  }
+    const list = document.getElementById('leaderboardList');
 
+    try {
+        const response = await fetch(API_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, score, country })
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
+        }
+
+        if (nameInput)    nameInput.value    = '';
+        if (countryInput) countryInput.value = '';
+
+        await renderLeaderboard();
+
+    } catch (err) {
+        console.error('Submit error:', err);
+        if (list) list.innerHTML = `<div class="lb-loading">Error: ${err.message} — Check F12 console</div>`;
+    } finally {
+        if (btn) { btn.textContent = 'Submit'; btn.disabled = false; }
+    }
+}
   async function renderLeaderboard() {
     const list = document.getElementById('leaderboardList');
     if (!list) return;
