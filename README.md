@@ -12,7 +12,7 @@ A fully customised, cloud-deployed 2048 game built with vanilla JavaScript and h
 
 ## 🚀 Live Demo
 
-**http://54.198.135.133**
+**http://54.162.146.158**
 
 > Domain pending: `https://2048km.is-a.dev`
 
