@@ -615,28 +615,30 @@ async function submitScore() {
     list.innerHTML = `<div class="lb-loading">Loading...</div>`;
 
     try {
-      const res    = await fetch(API_URL);
-      const scores = await res.json();
-      const medals     = ['🥇','🥈','🥉'];
-      const rankClass  = ['lb-gold','lb-silver','lb-bronze'];
+        const res = await fetch(API_URL + '?t=' + Date.now()); // bust cache
+        if (!res.ok) throw new Error(`HTTP ${res.status}`);
+        const scores = await res.json();
+        const medals    = ['🥇','🥈','🥉'];
+        const rankClass = ['lb-gold','lb-silver','lb-bronze'];
 
-      if (!scores || !scores.length) {
-        list.innerHTML = `<div class="lb-loading">No scores yet — be first!</div>`;
-        return;
-      }
+        if (!scores || !scores.length) {
+            list.innerHTML = `<div class="lb-loading">No scores yet — be first!</div>`;
+            return;
+        }
 
-      list.innerHTML = scores.map((s, i) => `
-        <div class="lb-entry ${rankClass[i] || ''}">
-          <span class="lb-rank">${medals[i] || `#${i+1}`}</span>
-          <span class="lb-flag">${s.country || '🌍'}</span>
-          <span class="lb-name">${s.name}</span>
-          <span class="lb-score">${Number(s.score).toLocaleString()}</span>
-        </div>
-      `).join('');
+        list.innerHTML = scores.map((s, i) => `
+            <div class="lb-entry ${rankClass[i] || ''}">
+                <span class="lb-rank">${medals[i] || `#${i+1}`}</span>
+                <span class="lb-flag">${s.country || '🌍'}</span>
+                <span class="lb-name">${s.name || 'Unknown'}</span>
+                <span class="lb-score">${Number(s.score || 0).toLocaleString()}</span>
+            </div>
+        `).join('');
     } catch (err) {
-      list.innerHTML = `<div class="lb-loading">Could not load scores.</div>`;
+        console.error('Leaderboard fetch error:', err);
+        list.innerHTML = `<div class="lb-loading">Could not load scores — ${err.message}</div>`;
     }
-  }
+}
   // ── BOOT ──
   document.addEventListener('DOMContentLoaded', initSplash);
 
